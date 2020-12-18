@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from preview.colorlib.com/theme/homes/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 17 Nov 2020 16:45:13 GMT -->
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Homes Template">
+<meta name="keywords" content="Homes, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Homes Page | Template</title>
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+<!-- Css Styles -->
+<link rel="stylesheet" href="css/style.css" type="text/css"/>
+<link rel="stylesheet" href="css/mystyle.css" type="text/css"/>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+
+<!-- leaflet -->
+<style>
+    #mapid {position: absolute; top: 0; bottom: 0; left: 0; right: 0;}
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
+</head>
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+<div class="loader"></div>
+</div>
+<!-- Header Section Begin -->
+<header style="position: relative; background-color:#121052;" class="header-section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="main-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Header Section End -->
+
+<!-- Hero Section Begin -->
+<section class="hero-section home-page set-bg" data-setbg="img/bg.jpg">
+    <div class="container hero-text text-white">
+        <h2>Find your next home here</h2>
+    </div>
+</section>
+<!-- Filter Search Section End -->
+
+<!-- Hotel Room Section Begin -->
+<section class="hotel-rooms spad">
+    <div class="container-fluid">
+        <div class="justify-content-center row" style="height: 700px;">
+
+            <div class="col-lg-7 col-md-6 mapbox">
+                <div class="" id="mapid"></div>
+                <div class="overlay">   
+                    <img id="drag1" src="img/person.png" draggable="true" ondragstart="drag(event)" width="115" height="69"></img>
+                </div>
+            </div>
+
+            <div class="vertical-center col-lg-2 col-md-6">
+                <div class="room-items">
+                   <!-- <div id="houseimg" class="room-img set-bg" data-setbg="img/rooms/4.jpg"></div> -->
+                    <img id="houseimg" class="room-img set-bg" src="img/rooms/4.jpg" alt="">
+                    <div class="room-text">
+                        <div class="room-details">
+                            <div class="text-center room-title">
+                                <h5 id="housedesc" >Country Style House with beautiful garden and terrace</h5>
+                            </div>
+                        </div>
+                        <div class="room-features">
+                            <div class="room-info">
+                                <div class="size">
+                                    <p>Size</p>
+                                    <i class="fas fa-ruler-combined fa-lg"></i>
+                                    <span id="housesize">2561</span><span>m&#178</span>
+                                </div>
+                                <div class="beds">
+                                    <p>Beds</p>
+                                    <i class="fas fa-bed fa-lg"></i>
+                                    <span id="housebeds">9</span>
+                                </div>
+                                <div class="baths">
+                                    <p>Baths</p>
+                                    <i class="fas fa-bath fa-lg"></i>
+                                    <span id="housebath">2</span>
+                                </div>
+                                <div class="garage">
+                                    <p>Garage</p>
+                                    <i class="fas fa-warehouse fa-lg"></i>
+                                    <span id="housegar">1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5 price">
+                                <p id="houseprice">$345,000</p>
+                            </div>
+                        <a href="#" class="col-lg-5  button house-btn">View Property</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hotel Room Section End -->
+<section class="instagram">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2>owning a home is a keystone of wealth... both financial affluence and emotional security</h2>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Footer Section Begin -->
+<footer class="footer-section">
+    <div class="container">
+        <div class="row footer">
+            <div class="col-lg-7">
+                <div class="about-footer">
+                    <h5>About Homie</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eleifend tristique venenatis.
+                    Maecenas a rutrum tellus nam vel semper nibh.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-dribbble"></i></a>
+                        <a href="#"><i class="fa fa-behance"></i></a>
+                    </div>
+                </div>
+            </div>
+        <div class="col-lg-5 col-md-6">
+            <div class="footer-address">
+                <h5>Get In Touch</h5>
+                <ul>
+                <li><i class="flaticon-placeholder"></i><span>123 Liberty Street, Mobius, Metropolis</span>
+                </li>
+                <li><i class="flaticon-envelope"></i><span>test@homie.com</span></li>
+                <li><i class="flaticon-smartphone"></i><span>555-555-555</span></li>
+                </ul>
+            </div>
+        </div>
+        </div>
+    <div class="row p-20">
+    <div class="col-lg-12 text-center">
+    </div>
+    </div>
+    </div>
+</footer>
+<!-- Footer Section End -->
+<!-- Js Plugins -->
+<script src="js/jquery-3.3.1.min.js.pagespeed.jm.r0B4QCxeCQ.js"></script>
+<script src="js/bootstrap.min.js%2bjquery.nice-select.min.js.pagespeed.jc.jGrL3E_v88.js"></script>
+<script src="js/owl.carousel.min.js.pagespeed.jm.iD9BtIsBTL.js"></script>
+<script src="js/jquery-ui.min.js.pagespeed.jm.kliCpEL7OZ.js"></script>
+<script src="js/jquery.slicknav.js.pagespeed.jm.SeaZtwZMai.js"></script>
+<script>//<![CDATA[
+'use strict';(function($){$(".main-menu").slicknav({prependTo:'#mobile-menu-wrap',allowParentLinks:true});$(window).on('load',function(){$(".loader").fadeOut();$("#preloder").delay(400).fadeOut("slow");});$('.set-bg').each(function(){var bg=$(this).data('setbg');$(this).css('background-image','url('+bg+')');});$(document).ready(function(){$('.filter-location').niceSelect();});$(document).ready(function(){$('.filter-property').niceSelect();});$(document).ready(function(){$('.date-select').niceSelect();});$('.slider-active').owlCarousel({items:1,dots:false,nav:true,loop:true,navText:["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"]});$('.property-img').owlCarousel({items:1,dots:false,nav:true,loop:true,navText:["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"]});$("#slider-range").slider({range:true,min:50,max:300,step:50,value:50,values:[50,300],slide:function(event,ui){$('#slider-range .slider-left').text(ui.values[0]+'k');$('#slider-range .slider-right').text(ui.values[1]+'k');}});})(jQuery);
+//]]></script>
+
+<script>
+    var markersList = [
+        {"imgsrc":"img/rooms/2.jpg", "lang":51.5, "long":-0.09, "size":"1200", "beds":5, "bath":1, "garage":2, "price":"$250,000", "desc":"Country Style House with beautiful garden and terrace"},
+        {"imgsrc":"img/rooms/3.jpg", "lang":51.5, "long":-0.011, "size":"1800", "beds":7, "bath":3, "garage":0, "price":"$650,000", "desc":"european Style House with swimming pool"},
+    ];
+
+    var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+
+    L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=d5bWmwf9SPecTZNu2TzX', {
+    attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+    }).addTo(mymap);
+
+var MyCustomMarker = L.Marker.extend({
+    bindPopup: function(htmlContent) {       
+        // call the super method
+        L.Marker.prototype.bindPopup.apply(this, [htmlContent]); 
+        // unbind the click event
+        this.off("click", this.openPopup, this);
+        // bind to mouse over
+        this.on("mouseover", function(e) {  
+            // get the element that the mouse hovered onto
+            var target = e.originalEvent.fromElement || e.originalEvent.relatedTarget;
+            // show the popup
+            this.openPopup();  
+        }, this);      
+    }
+});
+
+//Better markers
+var markers = new L.FeatureGroup();
+
+markersList.forEach(function(mrk) {
+    var popup="<div id='div1' ondrop='drop(event)' ondragover='allowDrop(event)' style='border: 1px solid #aaaaaa;'>"+
+            "<div class='room-img'><img id='mrkimg' src='"+mrk.imgsrc+"'></img></div>"+
+                "<div id='mrkdata' class='text-center' data-size='"+mrk.size+"' data-beds='"+mrk.beds+"' data-bath='"+mrk.bath+"' data-garage='"+mrk.garage+"' data-price='"+mrk.price+"'>"+
+                    "<h5 id='mrkdesc'>"+mrk.desc+"</h5>"+
+                "</div>"+
+            "</div>"
+    ;
+
+    var marker = new MyCustomMarker([mrk.lang, mrk.long]);
+    marker.bindPopup(popup);
+    markers.addLayer(marker);
+});
+mymap.addLayer(markers);
+
+
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+  
+    //may change
+    document.getElementById("houseimg").src = ev.currentTarget.querySelector("#mrkimg").src;
+    document.getElementById("housedesc").innerHTML = ev.currentTarget.querySelector("#mrkdesc").innerHTML;
+
+    document.getElementById("housesize").innerHTML = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-size");
+
+    document.getElementById("housebeds").innerHTML = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-beds");
+
+    document.getElementById("housebath").innerHTML = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-bath");
+
+    document.getElementById("housegar").innerHTML = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-garage");
+
+    document.getElementById("houseprice").innerHTML = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-price");
+    //
+}
+</script>
+
+</body>
+
+
+</html>

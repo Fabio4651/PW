@@ -1,0 +1,75 @@
+.price{
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.price p{
+	color: #30304e;
+	font-size: 24px;
+    font-weight: 500;
+    margin: 0
+}
+
+.vertical-center {
+    margin: 0;   
+    top: 10%;
+  }
+
+/* buttons */
+
+.button {
+	display: inline-block;
+	border: 2px solid #8f8fa8;
+	font-size: 16px;
+	font-weight: 500;
+	padding: 15px 25px;
+	border-radius: 4px;
+	color: #8f8fa8;
+	line-height: normal;
+}
+
+.house-btn {
+	float: right;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	-webkit-transition: 0.3s;
+	transition: 0.3s;
+}
+
+.house-btn:hover {
+	color: #fff;
+	background: #8AD144;
+	border-color: #8AD144;
+}
+
+/* buttons end */
+
+/* map marker */
+.leaflet-popup-content-wrapper {
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+}
+
+.leaflet-popup-tip-container {
+}
+/* map marker end */
+
+.footer {
+	padding-bottom: 37px;
+	padding-top: 37px;
+}
+
+.mapbox {
+    position: relative;
+}
+
+.mapbox .overlay {
+    position: absolute;
+    top: 0;
+	right: 0;
+	z-index: 1000;
+}
+
+
