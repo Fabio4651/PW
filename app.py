@@ -1,59 +1,34 @@
-from flask import Flask, jsonify, render_template, request
-from flask_mysqldb import MySQL
+from flask import Flask, render_template, flash, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/pw'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'admin'
-app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_DB'] = 'PW'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+db = SQLAlchemy(app)
 
-mysql = MySQL()
-mysql.init_app(app)
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    size = db.Column(db.String(100))
+    beds = db.Column(db.String(100))
+    baths = db.Column(db.String(100))
+    garage = db.Column(db.String(100))
+    description = db.Column(db.String(100))
+    price = db.Column(db.String(100))
+    location = db.Column(db.String(100))
+    img = db.Column(db.String(100))
+    owner = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-@app.route('/')
-def property():
-    cur = mysql.connection.cursor()
-    #cur.execute('''CREATE TABLE example (id INTEGER, name VARCHAR(20))''')
-    #cur.execute('''INSERT INTO example VALUES (1, 'Diego')''')
-    #cur.execute('''INSERT INTO example VALUES (2, 'Zman')''')
-    #mysql.connection.commit()
-
-    cur.execute('''SELECT * FROM property, user''')
-    results = cur.fetchall()
-    print(results)
-    #return results[1]['name']
-    return render_template('hometeste.html',
-        idprop = results[0]['id'],
-        nomeprop = results[0]['name'],
-        sizeprop = results[0]['size'],
-        bedsprop = results[0]['beds'],
-        bathsprop = results[0]['baths'],
-        garageprop = results[0]['garage'],
-        descriptionprop = results[0]['description'],
-        priceprop = results[0]['price'],
-        locationprop = results[0]['location'],
-        imgprop = results[0]['img'],
-        ownerprop = results[0]['user.name'],
-        ownerimg = results[0]['user.img'],
-        owneremail = results[0]['email'],
-        ownerphone = results[0]['phone']
-    )
+def __init__(self, name, size):
+    self.name = name
+    self.size = size
 
 
-#@app.route("/prop", methods=['GET'])
-#def room_get():
- #   name = request.args.get('search')
-  #  r = prop.query.filter_by(name=name).all()[0]
-   # return render_template('index2.html',
-    #    id = r.id,
-     #   room_type = r.room_type,
-      #  map_position_x = r.map_position_x,
-       # map_position_y = r.map_position_y,
-        #capacity = r.capacity
-    #)
 
-
-#cursor = mysql.get_db().cursor()
-
+#db.session.query(db.func.avg(User.id)).scalar()
+#db.session.query(db.func.sum(User.id)).scalar()
+#db.session.query(db.func.min(User.id)).scalar()
+#db.session.query(db.func.max(User.id)).scalar()
+#db.session.query(db.func.dayname(User.date_joined)).all()
+#db.session.query(User.email, db.func.dayname(User.date_joined)).filter(db.func.dayname(User.date_joined) == 'Monday').all()
