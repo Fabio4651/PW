@@ -7,18 +7,93 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+app.config['APPLICATION_ROOT'] = "/"
+
 class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    email = db.Column(db.String(100))
+    phone = db.Column(db.String(100))
+    img = db.Column(db.String(100))
+    password = db.Column(db.String(100))
+
+class Property(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     size = db.Column(db.String(100))
     beds = db.Column(db.String(100))
     baths = db.Column(db.String(100))
     garage = db.Column(db.String(100))
-    description = db.Column(db.String(100))
+    description = db.Column(db.String(500))
     price = db.Column(db.String(100))
     location = db.Column(db.String(100))
     img = db.Column(db.String(100))
-    owner = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    owner = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    
+
+@app.route("/prop", methods=['GET'])
+def prop():
+    id = request.args.get('id')
+    #print(str("diego "+data)) 
+    p = Property.query.filter_by(id=id).first()
+    u = User.query.filter_by(id=id).first()
+    return render_template('home.html',
+        idprop = p.id,
+        nameprop = p.name,
+        sizeprop = p.size,
+        bedsprop = p.beds,
+        bathsprop = p.baths,
+        garageprop = p.garage,
+        descriptionprop = p.description,
+        priceprop = p.price,
+        locationprop = p.location,
+        imgprop = p.img,
+        ownerprop = u.id,
+        ownerimg = u.img,
+        owneremail = u.email,
+        ownerphone = u.phone
+    )
+@app.route("/search", methods=['GET'])
+def search():
+    p = Property.query.filter_by(id=1).first()
+    u = User.query.filter_by(id=1).first()
+    return render_template('search.html',
+        idprop = p.id,
+        nameprop = p.name,
+        sizeprop = p.size,
+        bedsprop = p.beds,
+        bathsprop = p.baths,
+        garageprop = p.garage,
+        descriptionprop = p.description,
+        priceprop = p.price,
+        locationprop = p.location,
+        imgprop = p.img,
+        ownerprop = u.id,
+        ownerimg = u.img,
+        owneremail = u.email,
+        ownerphone = u.phone
+    )
+
+@app.route("/", methods=['GET'])
+def main():
+    p = Property.query.filter_by(id=1).first()
+    u = User.query.filter_by(id=1).first()
+    return render_template('index.html',
+        idprop = p.id,
+        nameprop = p.name,
+        sizeprop = p.size,
+        bedsprop = p.beds,
+        bathsprop = p.baths,
+        garageprop = p.garage,
+        descriptionprop = p.description,
+        priceprop = p.price,
+        locationprop = p.location,
+        imgprop = p.img,
+        ownerprop = u.id,
+        ownerimg = u.img,
+        owneremail = u.email,
+        ownerphone = u.phone
+    )
 
 def __init__(self, name, size):
     self.name = name

@@ -12,10 +12,10 @@
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <!-- Css Styles -->
-<link rel="stylesheet" href="css/style.css" type="text/css"/>
-<link rel="stylesheet" href="css/mystyle.css" type="text/css"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mystyle.css') }}" type="text/css"/>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
-<link rel="stylesheet" type="text/css" href="slider-js-master/res/style.main.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='slider-js-master/res/style.main.css') }}">
 
 <!-- leaflet -->
 <style>
@@ -25,6 +25,41 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 
+
+    <script>
+        var send_data;
+    function send() {
+		fetch('/prop?id='+send_data)
+		.then(function(response) {
+  			console.log(response);
+ 			response.text().then(function(text) {
+       		document.getElementById("result").innerHTML = text;
+    		});
+		})
+    }
+    
+    function send2() {
+
+        var redirect = '/prop';
+        $.redirectPost(redirect, {id: send_data});
+
+        // jquery extend function
+        $.extend(
+        {
+            redirectPost: function(location, args)
+            {
+                var form = '';
+                $.each( args, function(x) {
+                    form += '<input type="hidden" id="'+x+'">';
+                });
+                $('<form action="'+location+'" method="POST">'+form+'</form>').submit();
+            }
+        });        
+    }
+    
+
+
+    </script>
 </head>
 <body>
 <!-- Page Preloder -->
@@ -37,8 +72,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <ul class="main-menu">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="search.html">Search</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/search">Search</a></li>
+                    <li><a href="#">Login</a></li>
                 </ul>
             </div>
         </div>
@@ -61,15 +97,15 @@
 
     <div class="slider-item">
         <!-- You can embed whatever you want insider this and provide custom styling -->
-        <img src="img/rooms/5.jpg">
+        <img src="{{ url_for('static', filename='img/rooms/5.jpg') }}">
     </div>
 
     <div class="slider-item">
-        <img src="img/rooms/5.jpg">
+        <img src="{{ url_for('static', filename='img/rooms/5.jpg') }}">
     </div>
 
     <div class="slider-item">
-        <img src="img/rooms/5.jpg">
+        <img src="{{ url_for('static', filename='img/rooms/5.jpg') }}">
     </div>
     
 
@@ -100,18 +136,18 @@
             <div class="col-lg-7 col-md-6 mapbox">
                 <div class="" id="mapid"></div>
                 <div class="overlay">   
-                    <img id="drag1" src="img/person.png" draggable="true" ondragstart="drag(event)" width="115" height="69"></img>
+                    <img id="drag1" src="{{ url_for('static', filename='img/person.png') }}" draggable="true" ondragstart="drag(event)" width="115" height="69"></img>
                 </div>
             </div>
 
             <div class="vertical-center col-lg-2 col-md-6">
                 <div class="room-items">
                    <!-- <div id="houseimg" class="room-img set-bg" data-setbg="img/rooms/4.jpg"></div> -->
-                    <img id="houseimg" class="room-img set-bg" src="img/rooms/4.jpg" alt="">
+                    <img id="houseimg" class="room-img set-bg" src="{{ url_for('static', filename='img/rooms/4.jpg') }}" alt="">
                     <div class="room-text">
                         <div class="room-details">
                             <div class="text-center room-title">
-                                <h5 id="housedesc" >Country Style House with beautiful garden and terrace</h5>
+                                <h5 id="housedesc" >{{nomeprop}}</h5>
                             </div>
                         </div>
                         <div class="room-features">
@@ -119,30 +155,30 @@
                                 <div class="size">
                                     <p>Size</p>
                                     <i class="fas fa-ruler-combined fa-lg"></i>
-                                    <span id="housesize">2561</span><span>m&#178</span>
+                                    <span id="housesize">{{sizeprop}}</span><span>m&#178</span>
                                 </div>
                                 <div class="beds">
                                     <p>Beds</p>
                                     <i class="fas fa-bed fa-lg"></i>
-                                    <span id="housebeds">9</span>
+                                    <span id="housebeds">{{bedsprop}}</span>
                                 </div>
                                 <div class="baths">
                                     <p>Baths</p>
                                     <i class="fas fa-bath fa-lg"></i>
-                                    <span id="housebath">2</span>
+                                    <span id="housebath">{{bathsprop}}</span>
                                 </div>
                                 <div class="garage">
                                     <p>Garage</p>
                                     <i class="fas fa-warehouse fa-lg"></i>
-                                    <span id="housegar">1</span>
+                                    <span id="housegar">{{garageprop}}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-5 price">
-                                <p id="houseprice">$345,000</p>
+                                <p id="houseprice">{{priceprop}}€</p>
                             </div>
-                        <a href="home.html" class="col-lg-5  button house-btn">View Property</a>
+                        <a onclick="send2()" class="col-lg-5 button house-btn">View Property</a>
                         </div>
                         
                     </div>
@@ -199,12 +235,12 @@
 </footer>
 <!-- Footer Section End -->
 <!-- Js Plugins -->
-<script src="js/jquery-3.3.1.min.js.pagespeed.jm.r0B4QCxeCQ.js"></script>
-<script src="js/bootstrap.min.js%2bjquery.nice-select.min.js.pagespeed.jc.jGrL3E_v88.js"></script>
-<script src="js/owl.carousel.min.js.pagespeed.jm.iD9BtIsBTL.js"></script>
-<script src="js/jquery-ui.min.js.pagespeed.jm.kliCpEL7OZ.js"></script>
-<script src="js/jquery.slicknav.js.pagespeed.jm.SeaZtwZMai.js"></script>
-<script type="text/javascript" src="slider-js-master/res/script.main.js"></script>
+<script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js.pagespeed.jm.r0B4QCxeCQ.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js%2bjquery.nice-select.min.js.pagespeed.jc.jGrL3E_v88.js') }}"></script>
+<script src="{{ url_for('static', filename='js/owl.carousel.min.js.pagespeed.jm.iD9BtIsBTL.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-ui.min.js.pagespeed.jm.kliCpEL7OZ.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.slicknav.js.pagespeed.jm.SeaZtwZMai.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='slider-js-master/res/script.main.js') }}"></script>
 <script>//<![CDATA[
 'use strict';(function($){$(".main-menu").slicknav({prependTo:'#mobile-menu-wrap',allowParentLinks:true});$(window).on('load',function(){$(".loader").fadeOut();$("#preloder").delay(400).fadeOut("slow");});$('.set-bg').each(function(){var bg=$(this).data('setbg');$(this).css('background-image','url('+bg+')');});$(document).ready(function(){$('.filter-location').niceSelect();});$(document).ready(function(){$('.filter-property').niceSelect();});$(document).ready(function(){$('.date-select').niceSelect();});$('.slider-active').owlCarousel({items:1,dots:false,nav:true,loop:true,navText:["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"]});$('.property-img').owlCarousel({items:1,dots:false,nav:true,loop:true,navText:["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"]});$("#slider-range").slider({range:true,min:50,max:300,step:50,value:50,values:[50,300],slide:function(event,ui){$('#slider-range .slider-left').text(ui.values[0]+'k');$('#slider-range .slider-right').text(ui.values[1]+'k');}});})(jQuery);
 //]]></script>
@@ -212,7 +248,7 @@
 <script>
     var markersList = [
         {"imgsrc":"img/rooms/2.jpg", "id":1, "lang":51.5, "long":-0.09, "size":"1200", "beds":5, "bath":1, "garage":2, "price":"$250,000", "desc":"Country Style House with beautiful garden and terrace"},
-        {"imgsrc":"img/rooms/3.jpg", "lang":51.5, "long":-0.011, "size":"1800", "beds":7, "bath":3, "garage":0, "price":"$650,000", "desc":"european Style House with swimming pool"},
+        {"imgsrc":"img/rooms/3.jpg", "id":2, "lang":51.5, "long":-0.011, "size":"1800", "beds":7, "bath":3, "garage":0, "price":"$650,000", "desc":"european Style House with swimming pool"},
     ];
 
     var mymap = L.map('mapid').setView([51.505, -0.09], 13);
@@ -280,6 +316,8 @@ function drop(ev) {
     document.getElementById("housegar").innerHTML = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-garage");
 
     document.getElementById("houseprice").innerHTML = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-price");
+
+    send_data = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-id");
     //
 }
 </script>

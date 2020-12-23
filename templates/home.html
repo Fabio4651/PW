@@ -39,6 +39,12 @@
 <!--image slider CSS-->
 <link rel="stylesheet"  href="{{ url_for('static', filename='css/lightslider.css') }}"/>
 
+<script>
+function myFunction() {
+  alert("Page is loaded");
+}
+</script>
+
 </head>
 <body>
 <!-- Page Preloder -->
@@ -51,8 +57,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <ul class="main-menu">
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a href="../search.html">Search</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/search">Search</a></li>
+                    <li><a href="#">Login</a></li>
                 </ul>
             </div>
         </div>
@@ -76,15 +83,15 @@ Hero Section End -->
 
     <div class="slider-item">
         <!-- You can embed whatever you want insider this and provide custom styling -->
-        <img src="../img/rooms/5.jpg">
+        <img src="{{ url_for('static', filename='img/rooms/5.jpg') }}">
     </div>
 
     <div class="slider-item">
-        <img src="../img/rooms/5.jpg">
+        <img src="{{ url_for('static', filename='img/rooms/5.jpg') }}">
     </div>
 
     <div class="slider-item">
-        <img src="../img/rooms/5.jpg">
+        <img src="{{ url_for('static', filename='img/rooms/5.jpg') }}">
     </div>
     
 
@@ -163,7 +170,6 @@ Hero Section End -->
                     <div style="width:40%;position: absolute;top: 95%;left: 60%;" class="room-details"> 
                         <div class="text-center room-title">
                             <img class="img-radius" src="{{ url_for('static', filename='img/{{ownerimg}}') }}" alt="User-Profile-Image">
-                            <h5 id="housedesc"><br>{{ownerprop}}</h5>
                             <h6 id="housedesc"><br>{{owneremail}}</h6>
                             <h6 id="housedesc"><br>{{ownerphone}}</h6>
                         </div>
