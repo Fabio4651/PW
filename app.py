@@ -31,10 +31,10 @@ class Property(db.Model):
     owner = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     
 
-@app.route("/prop", methods=['GET'])
+@app.route("/prop", methods=['POST'])
 def prop():
-    id = request.args.get('id')
-    #print(str("diego "+data)) 
+    id = request.values.get('form.value')
+    print(str(id)) 
     p = Property.query.filter_by(id=id).first()
     u = User.query.filter_by(id=id).first()
     return render_template('home.html',

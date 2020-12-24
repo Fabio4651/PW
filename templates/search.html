@@ -38,7 +38,7 @@
 		})
     }
     
-    function send2() {
+    /*function send2() {
 
         var redirect = '/prop';
         $.redirectPost(redirect, {id: send_data});
@@ -55,8 +55,23 @@
                 $('<form action="'+location+'" method="POST">'+form+'</form>').submit();
             }
         });        
-    }
-    
+    }*/
+
+
+        function redirectPost(url, send_data) {
+            var form = document.createElement('form');
+            document.body.appendChild(form);
+            form.method = 'post';
+            form.action = url;
+            for (var name in send_data) {
+                var input = document.createElement('input');
+                input.value = send_data
+                form.appendChild(input);
+            }
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+        }
 
 
     </script>
@@ -178,7 +193,7 @@
                             <div class="col-lg-5 price">
                                 <p id="houseprice">{{priceprop}}€</p>
                             </div>
-                        <a onclick="send2()" class="col-lg-5 button house-btn">View Property</a>
+                        <a onclick="redirectPost('/prop', { id: 'mrk.id' });" class="col-lg-5 button house-btn">View Property</a>
                         </div>
                         
                     </div>
@@ -247,8 +262,8 @@
 
 <script>
     var markersList = [
-        {"imgsrc":"img/rooms/2.jpg", "id":1, "lang":51.5, "long":-0.09, "size":"1200", "beds":5, "bath":1, "garage":2, "price":"$250,000", "desc":"Country Style House with beautiful garden and terrace"},
-        {"imgsrc":"img/rooms/3.jpg", "id":2, "lang":51.5, "long":-0.011, "size":"1800", "beds":7, "bath":3, "garage":0, "price":"$650,000", "desc":"european Style House with swimming pool"},
+        {"imgsrc":"{{ url_for('static', filename='img/rooms/2.jpg') }}", "id":1, "lang":51.5, "long":-0.09, "size":"1200", "beds":5, "bath":1, "garage":2, "price":"$250,000", "desc":"Country Style House with beautiful garden and terrace"},
+        {"imgsrc":"{{ url_for('static', filename='img/rooms/3.jpg') }}", "id":2, "lang":51.5, "long":-0.011, "size":"1800", "beds":7, "bath":3, "garage":0, "price":"$650,000", "desc":"european Style House with swimming pool"},
     ];
 
     var mymap = L.map('mapid').setView([51.505, -0.09], 13);
