@@ -27,14 +27,19 @@
 
 
     <script>
-        var send_data;
+
+
+
+        var id_prop;
+
+        function myFunction() {
+            location.replace('/query?id='+id)
+        }    
     function send() {
-		fetch('/prop?id='+send_data)
+        //fetch('/query?id='+send_data)
+        redirectPost('/prop?id_prop='+id_prop, { id: id_prop })
 		.then(function(response) {
   			console.log(response);
- 			response.text().then(function(text) {
-       		document.getElementById("result").innerHTML = text;
-    		});
 		})
     }
     
@@ -162,7 +167,7 @@
                     <div class="room-text">
                         <div class="room-details">
                             <div class="text-center room-title">
-                                <h5 id="housedesc" >{{nomeprop}}</h5>
+                                <h5 id="housedesc" >{{nameprop}}</h5>
                             </div>
                         </div>
                         <div class="room-features">
@@ -193,7 +198,8 @@
                             <div class="col-lg-5 price">
                                 <p id="houseprice">{{priceprop}}€</p>
                             </div>
-                        <a onclick="redirectPost('/prop', { id: 'mrk.id' });" class="col-lg-5 button house-btn">View Property</a>
+                        <!--<a onclick="redirectPost('/query', { id: send_data });" class="col-lg-5 button house-btn">View Property</a>-->
+                        <a onclick="send()" class="col-lg-5 button house-btn">View Property</a>
                         </div>
                         
                     </div>
@@ -332,7 +338,7 @@ function drop(ev) {
 
     document.getElementById("houseprice").innerHTML = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-price");
 
-    send_data = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-id");
+    id_prop = ev.currentTarget.querySelector("#mrkdata").getAttribute("data-id");
     //
 }
 </script>

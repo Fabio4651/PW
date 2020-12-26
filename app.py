@@ -30,13 +30,18 @@ class Property(db.Model):
     img = db.Column(db.String(100))
     owner = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     
+@app.route('/query', methods=['POST'])
+def query():
+    data = request.args.get('id_prop') #if key doesn't exist, returns None
+    print('Diego '+str(data)) 
+    return '''<h1>The language value is: {}</h1>'''.format(data)
 
 @app.route("/prop", methods=['POST'])
 def prop():
-    id = request.values.get('form.value')
-    print(str(id)) 
-    p = Property.query.filter_by(id=id).first()
-    u = User.query.filter_by(id=id).first()
+    data = request.args.get('id_prop')
+    #print(str(id)) 
+    p = Property.query.filter_by(id=data).first()
+    u = User.query.first()
     return render_template('home.html',
         idprop = p.id,
         nameprop = p.name,
