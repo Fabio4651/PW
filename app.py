@@ -36,6 +36,26 @@ def query():
     print('Diego '+str(data)) 
     return '''<h1>The language value is: {}</h1>'''.format(data)
 
+@app.route("/admin_main")
+def admin_main():
+    return render_template('admin.html')
+
+@app.route("/list_user")
+def list_user():
+    return render_template('list.html')
+
+@app.route("/add_user")
+def add_user():
+    return render_template('add.html')
+
+@app.route("/add_prop")
+def add_prop():
+    return render_template('add.html')
+
+@app.route("/list_prop")
+def list_prop():
+    return render_template('list.html')
+
 @app.route("/prop", methods=['POST'])
 def prop():
     data = request.args.get('id_prop')

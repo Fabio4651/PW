@@ -28,13 +28,8 @@
 
     <script>
 
-
-
         var id_prop;
 
-        function myFunction() {
-            location.replace('/query?id='+id)
-        }    
     function send() {
         //fetch('/query?id='+send_data)
         redirectPost('/prop?id_prop='+id_prop, { id: id_prop })
@@ -43,26 +38,6 @@
 		})
     }
     
-    /*function send2() {
-
-        var redirect = '/prop';
-        $.redirectPost(redirect, {id: send_data});
-
-        // jquery extend function
-        $.extend(
-        {
-            redirectPost: function(location, args)
-            {
-                var form = '';
-                $.each( args, function(x) {
-                    form += '<input type="hidden" id="'+x+'">';
-                });
-                $('<form action="'+location+'" method="POST">'+form+'</form>').submit();
-            }
-        });        
-    }*/
-
-
         function redirectPost(url, send_data) {
             var form = document.createElement('form');
             document.body.appendChild(form);
