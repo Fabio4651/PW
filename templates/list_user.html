@@ -42,13 +42,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Blank Page</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Blank Page</li>
-            </ol>
+            <h1>Users</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -59,52 +53,27 @@
 
       <!-- Default box -->
       <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Title</h3>
-
-          <div class="card-tools">
-            
-          </div>
-        </div>
         <div class="card-body">
           <table id="example2" class="table table-bordered table-hover">
             <thead>
             <tr>
-              <th>Rendering engine</th>
-              <th>Browser</th>
-              <th>Platform(s)</th>
-              <th>Engine version</th>
-              <th>CSS grade</th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Image</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-              <td>Trident</td>
-              <td>Internet
-                Explorer 4.0
-              </td>
-              <td>Win 95+</td>
-              <td> 4</td>
-              <td>X</td>
-            </tr>
-            <tr>
-              <td>Trident</td>
-              <td>Internet
-                Explorer 5.0
-              </td>
-              <td>Win 95+</td>
-              <td>5</td>
-              <td>C</td>
-            </tr>
-            <tr>
-              <td>Trident</td>
-              <td>Internet
-                Explorer 5.5
-              </td>
-              <td>Win 95+</td>
-              <td>5.5</td>
-              <td>A</td>
-            </tr>
+            <tbody>             
+               {% for row in data %}
+                    <tr>
+                      <td>{{row.id}}</td>
+                      <td>{{row.name}}</td>
+                      <td>{{row.email}}</td>
+                      <td>{{row.phone}}</td>
+                      <td>{{row.img}}</td>
+                    </tr>
+                {% endfor %}
             </tfoot>
           </table>
         </div>

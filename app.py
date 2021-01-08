@@ -1,5 +1,11 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+from flask_session import Session 
+from markupsafe import escape
+import json
+import uuid
+from os.path import join, dirname, realpath
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/pw'
@@ -30,6 +36,7 @@ class Property(db.Model):
     img = db.Column(db.String(100))
     owner = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     
+    
 @app.route('/query', methods=['POST'])
 def query():
     data = request.args.get('id_prop') #if key doesn't exist, returns None
@@ -42,7 +49,9 @@ def admin_main():
 
 @app.route("/list_user")
 def list_user():
-    return render_template('list.html')
+    data = User.query.all()
+    
+    return render_template('list_user.html', data=data)
 
 @app.route("/add_user")
 def add_user():
@@ -54,7 +63,10 @@ def add_prop():
 
 @app.route("/list_prop")
 def list_prop():
-    return render_template('list.html')
+    data = Property.query.all()
+    data2 = User.query.all()
+    
+    return render_template('list_prop.html', data=data, data2=data2)
 
 @app.route("/prop", methods=['POST'])
 def prop():
