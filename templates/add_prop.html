@@ -25,6 +25,20 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/daterangepicker/daterangepicker.css') }}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/summernote/summernote-bs4.min.css') }}">
+  <!-- Page specific script -->
+  <script>
+  $(function () {
+    bsCustomFileInput.init();
+  });
+  </script>
+  <script type="text/javascript">
+    function ShowHideDiv() {
+        document.getElementById("garagenumber").value = "0";
+        var customRadio1 = document.getElementById("customRadio1");
+        var ngarage = document.getElementById("ngarage");
+        ngarage.style.display = customRadio1.checked ? "block" : "none";
+    }
+  </script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -42,7 +56,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Properties</h1>
+            <h1>Add Property</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -53,46 +67,65 @@
 
       <!-- Default box -->
       <div class="card">
+        <form method="POST" action="/insert_prop" enctype="multipart/form-data">
         <div class="card-body">
-          <table id="example2" class="table table-bordered table-hover">
-            <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Size</th>
-              <th>Beds</th>
-              <th>Garage</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Location</th>
-              <th>Image</th>
-              <th>Owner</th>
-              <th>Owner ID</th>
-            </tr>
-            </thead>
-            <tbody>
-              {% for row in data %}
-                  <tr>
-                    <td>{{row.id}}</td>
-                    <td>{{row.name}}</td>
-                    <td>{{row.size}}</td>
-                    <td>{{row.beds}}</td>
-                    <td>{{row.garagenumber}}</td>
-                    <td>{{row.description}}</td>
-                    <td>{{row.price}}</td>
-                    <td>{{row.location}}</td>
-                    <td>{{row.img}}</td>
-                    <td>{{data2.name}}</td>
-                    <td>{{row.owner}}</td>
-                  </tr>
-              {% endfor %}
-            </tfoot>
-          </table>
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" placeholder="" id="name" name="name">
+          </div>
+          <div class="form-group">
+            <label>Size (m&#178)</label>
+            <input type="number" class="form-control" placeholder="" id="size" name="size">
+          </div>
+          <div class="form-group">
+            <label>Number of beds</label>
+            <input type="number" class="form-control" placeholder="" id="beds" name="beds">
+          </div>
+          <div class="form-group">
+            <label>Number of bathrooms</label>
+            <input type="number" class="form-control" placeholder="" id="baths" name="baths">
+          </div>
+          <div class="form-group">
+            <label>Garage</label>
+            <div class="custom-control custom-radio">
+              <input class="custom-control-input custom-control-input-secondary" onclick="ShowHideDiv()" type="radio" id="customRadio1" name="garage">
+              <label for="customRadio1" class="custom-control-label">Yes</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input class="custom-control-input custom-control-input-secondary" onclick="ShowHideDiv()" type="radio" id="customRadio2" name="garage" checked>
+              <label for="customRadio2" class="custom-control-label">No</label>
+            </div>
+          </div>
+          <div id="ngarage" style="display: none" class="form-group">
+            <label>Number of garages</label>
+            <input type="number" class="form-control" id="garagenumber" value="0" name="garagenumber">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="3" id="description" name="description"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Price (€)</label>
+            <input type="number" class="form-control" placeholder="" id="price" name="price">
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" class="form-control" placeholder="" id="location" name="location">
+          </div>
+          <div class="form-group">
+            <label for="customFile">Images</label>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="customFile" name="img">
+              <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+          </div>
         </div>
-        <!-- /.card-body -->
         <div class="card-footer">
-          Footer
+          <input hidden type="text" class="form-control" value="1" placeholder="" id="owner" name="owner">
+          <button type="submit" class="btn btn-secondary">Submit</button>
         </div>
+      </form>
+        <!-- /.card-body -->
         <!-- /.card-footer-->
       </div>
       <!-- /.card -->
@@ -151,5 +184,11 @@
 <script src="{{ url_for('static', filename='AdminLTE/dist/js/pages/dashboard.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ url_for('static', filename='AdminLTE/dist/js/pages/dashboard.js') }}"></script>
-</body>
+<!-- bs-custom-file-input -->
+<script src="{ url_for('static', filename='AdminLTE/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ url_for('static', filename='AdminLTE/dist/js/adminlte.min.js') }}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ url_for('static', filename='AdminLTE/dist/js/demo.js') }}"></script>
+</body>{
 </html>

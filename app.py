@@ -10,12 +10,16 @@ from os.path import join, dirname, realpath
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/pw'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SESSION_TYPE'] = 'sqlalchemy'
 
 db = SQLAlchemy(app)
+
+app.config['SESSION_SQLALCHEMY'] = db
 
 app.config['APPLICATION_ROOT'] = "/"
 
 class User(db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(100))
@@ -23,18 +27,44 @@ class User(db.Model):
     img = db.Column(db.String(100))
     password = db.Column(db.String(100))
 
+    def __init__(self,name,email,phone,img,password):
+        self.name=name
+        self.email=email
+        self.phone=phone
+        self.img=img
+        self.password=password
+    
+    def __repr__(self):
+        return repr(id)
+
 class Property(db.Model):
+    __tablename__ = 'property'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     size = db.Column(db.String(100))
     beds = db.Column(db.String(100))
     baths = db.Column(db.String(100))
-    garage = db.Column(db.String(100))
+    garagenumber = db.Column(db.String(100))
     description = db.Column(db.String(500))
     price = db.Column(db.String(100))
     location = db.Column(db.String(100))
     img = db.Column(db.String(100))
     owner = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+
+    def __init__(self,name,size,beds,baths,garagenumber,description,price,location,img,owner):
+        self.name=name
+        self.size=size
+        self.beds=beds
+        self.baths=baths
+        self.garagenumber=garagenumber
+        self.description=description
+        self.price=price
+        self.location=location
+        self.img=img
+        self.owner=owner        
+    
+    def __repr__(self):
+        return repr(id)
     
     
 @app.route('/query', methods=['POST'])
@@ -55,11 +85,44 @@ def list_user():
 
 @app.route("/add_user")
 def add_user():
-    return render_template('add.html')
+    return render_template('add_user.html')
+
+@app.route('/insert_user', methods=['POST'])
+def insert_user():
+    name = request.form['name']   
+    email = request.form['email']
+    phone = request.form['phone']
+    img = request.files['img']
+    password = request.form['password']
+    #if request.method == 'POST' and 'img' in request.files:
+       # filename = files.save(request.files['img'], name=str(last_id) + '.jpg')
+    new_user = User(name=name, email=email, phone=phone, img='static/upload/1.jpg', password=password)
+    db.session.add(new_user)
+    db.session.commit()
+    return redirect(url_for('list_user'))   
 
 @app.route("/add_prop")
 def add_prop():
-    return render_template('add.html')
+    return render_template('add_prop.html')
+
+@app.route('/insert_prop', methods=['POST'])
+def insert_prop():
+    name = request.form['name']   
+    size = request.form['size']
+    beds = request.form['beds']
+    baths = request.form['baths']   
+    garagenumber = request.form['garagenumber']
+    description = request.form['description']
+    price = request.form['price']
+    location = request.form['location']
+    img = request.files['img']
+    owner = request.form['owner']
+    #if request.method == 'POST' and 'img' in request.files:
+       # filename = files.save(request.files['img'], name=str(last_id) + '.jpg')
+    new_prop = Property(name=name, size=size, beds=beds, img='static/upload/1.jpg', garagenumber=garagenumber, baths=baths, description=description, price=price, owner=owner, location=location)
+    db.session.add(new_prop)
+    db.session.commit()
+    return redirect(url_for('list_prop'))   
 
 @app.route("/list_prop")
 def list_prop():
