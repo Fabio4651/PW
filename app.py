@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, request, redirect, url_for
+from flask import Flask, render_template, flash, request, redirect, url_for, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from flask_session import Session 
@@ -8,7 +8,10 @@ import uuid
 from os.path import join, dirname, realpath
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/pw'
+
+app.config['SECRET_KEY'] = '_1#y6G"F7Q2z\n\succ/'
+app.config['APPLICATION_ROOT'] = "/"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/pw'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_TYPE'] = 'sqlalchemy'
 
@@ -16,7 +19,7 @@ db = SQLAlchemy(app)
 
 app.config['SESSION_SQLALCHEMY'] = db
 
-app.config['APPLICATION_ROOT'] = "/"
+sess = Session(app)
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -75,12 +78,13 @@ def query():
 
 @app.route("/admin_main")
 def admin_main():
-    return render_template('admin.html')
+    if 'username' in session:
+        return render_template('admin.html')
+    return render_template('login.html')
 
 @app.route("/list_user")
 def list_user():
     data = User.query.all()
-    
     return render_template('list_user.html', data=data)
 
 @app.route("/add_user")
@@ -89,7 +93,7 @@ def add_user():
 
 @app.route('/insert_user', methods=['POST'])
 def insert_user():
-    name = request.form['name']   
+    name = request.form['name']
     email = request.form['email']
     phone = request.form['phone']
     img = request.files['img']
@@ -99,7 +103,7 @@ def insert_user():
     new_user = User(name=name, email=email, phone=phone, img='static/upload/1.jpg', password=password)
     db.session.add(new_user)
     db.session.commit()
-    return redirect(url_for('list_user'))   
+    return redirect(url_for('list_user'))
 
 @app.route("/add_prop")
 def add_prop():
@@ -126,10 +130,31 @@ def insert_prop():
 
 @app.route("/list_prop")
 def list_prop():
-    data = Property.query.all()
-    data2 = User.query.all()
-    
-    return render_template('list_prop.html', data=data, data2=data2)
+    if 'username' in session:
+        data = Property.query.all()
+        data2 = User.query.all()
+        return render_template('list_prop.html', data=data, data2=data2)
+    return render_template('login.html')
+
+@app.route('/admin')
+def admin():
+    if 'username' in session:
+        return render_template('admin.html')
+    return render_template('login.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+    email = request.form['email']
+    password = request.form['pass']
+    querydata = User.query.filter_by(email = email, password = password).first()
+    session['username'] = querydata.name
+    return redirect(url_for('admin_main')) 
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    session.clear()
+    return redirect(url_for('admin')) 
 
 @app.route("/prop", methods=['POST'])
 def prop():
@@ -143,7 +168,7 @@ def prop():
         sizeprop = p.size,
         bedsprop = p.beds,
         bathsprop = p.baths,
-        garageprop = p.garage,
+        garageprop = p.garagenumber,
         descriptionprop = p.description,
         priceprop = p.price,
         locationprop = p.location,
@@ -163,7 +188,7 @@ def search():
         sizeprop = p.size,
         bedsprop = p.beds,
         bathsprop = p.baths,
-        garageprop = p.garage,
+        garageprop = p.garagenumber,
         descriptionprop = p.description,
         priceprop = p.price,
         locationprop = p.location,
@@ -184,7 +209,7 @@ def main():
         sizeprop = p.size,
         bedsprop = p.beds,
         bathsprop = p.baths,
-        garageprop = p.garage,
+        garageprop = p.garagenumber,
         descriptionprop = p.description,
         priceprop = p.price,
         locationprop = p.location,
@@ -199,6 +224,8 @@ def __init__(self, name, size):
     self.name = name
     self.size = size
 
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 #db.session.query(db.func.avg(User.id)).scalar()
