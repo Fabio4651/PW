@@ -39,6 +39,29 @@
         ngarage.style.display = customRadio1.checked ? "block" : "none";
     }
   </script>
+  <script>
+        function edit(id_prop) {
+            redirectPost('/edit_prop?id_prop='+id_prop, { id: id_prop })
+            .then(function(response) {
+                console.log(response);
+            })
+        }
+
+    function redirectPost(url, id_prop) {
+        var form = document.createElement('form');
+        document.body.appendChild(form);
+        form.method = 'POST';
+        form.action = url;
+        var input = document.createElement('input');
+        input.value = id_prop
+        form.appendChild(input);
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+  </script>
+  
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -56,7 +79,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add Property</h1>
+            <h1>Edit Property</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -67,84 +90,88 @@
 
       <!-- Default box -->
       <div class="card">
-        <form method="POST" action="/insert_prop" enctype="multipart/form-data">
+        {% for row in update %}
+        <form method="POST" action="/edit_prop" enctype="multipart/form-data">
         <div class="card-body">
           <div class="form-group">
             <label>Name</label>
-            <input type="text" class="form-control" placeholder="" id="name" name="name">
+            <input type="text" class="form-control" value="{{row.name}}" placeholder="" id="name" name="name">
+            <input type="text" hidden class="form-control" value="{{row.id}}" placeholder="" id="id" name="id">
           </div>
           <div class="form-group">
             <label>Size (m&#178)</label>
-            <input type="number" class="form-control" placeholder="" id="size" name="size">
+            <input type="number" class="form-control" value="{{row.size}}" placeholder="" id="size" name="size">
           </div>
           <div class="form-group">
             <label>Number of beds</label>
-            <input type="number" class="form-control" placeholder="" id="beds" name="beds">
+            <input type="number" class="form-control" value="{{row.beds}}" placeholder="" id="beds" name="beds">
           </div>
           <div class="form-group">
             <label>Number of bathrooms</label>
-            <input type="number" class="form-control" placeholder="" id="baths" name="baths">
+            <input type="number" class="form-control" value="{{row.baths}}" placeholder="" id="baths" name="baths">
           </div>
           <div class="form-group">
             <label>Garage</label>
             <div class="custom-control custom-radio">
-              <input class="custom-control-input custom-control-input-secondary" onclick="ShowHideDiv()" type="radio" id="customRadio1" name="garage">
+              <input class="custom-control-input custom-control-input-secondary" onclick="ShowHideDiv()" type="radio" id="customRadio1" name="garage" checked>
               <label for="customRadio1" class="custom-control-label">Yes</label>
             </div>
             <div class="custom-control custom-radio">
-              <input class="custom-control-input custom-control-input-secondary" onclick="ShowHideDiv()" type="radio" id="customRadio2" name="garage" checked>
+              <input class="custom-control-input custom-control-input-secondary" onclick="ShowHideDiv()" type="radio" id="customRadio2" name="garage">
               <label for="customRadio2" class="custom-control-label">No</label>
             </div>
           </div>
-          <div id="ngarage" style="display: none" class="form-group">
+          <div id="ngarage" class="form-group">
             <label>Number of garages</label>
-            <input type="number" class="form-control" id="garagenumber" value="0" name="garagenumber">
+            <input type="number" class="form-control" value="{{row.garagenumber}}" id="garagenumber" value="0" name="garagenumber">
           </div>
           <div class="form-group">
             <label>Description</label>
-            <textarea class="form-control" rows="3" id="description" name="description"></textarea>
+            <textarea class="form-control" rows="3" id="description" name="description">{{row.description}}</textarea>
           </div>
           <div class="form-group">
             <label>Price (€)</label>
-            <input type="number" class="form-control" placeholder="" id="price" name="price">
+            <input type="number" class="form-control" value="{{row.price}}" placeholder="" id="price" name="price">
           </div>
           <div class="form-group">
             <label>Location</label>
-            <input type="text" class="form-control" placeholder="" id="location" name="location">
+            <input type="text" class="form-control" value="{{row.location}}" placeholder="" id="location" name="location">
           </div>
           <div class="form-group">
             <label for="customFile">Images</label>
             <div class="custom-file">
-              <input type="file" class="custom-file-input" id="customFile" name="img">
+              <input type="file" class="custom-file-input" value="{{row.img}}" id="customFile" name="img">
               <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
           </div>
           <div class="form-group">
             <label>Owner Name</label>
-            <input type="text" class="form-control" placeholder="" id="ownername" name="ownername">
+            <input type="text" class="form-control" value="{{row.ownername}}" placeholder="" id="ownername" name="ownername">
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">Owner Email</label>
-            <input type="email" class="form-control" id="owneremail" name="owneremail" placeholder="Enter email" required>
+            <input type="email" class="form-control" value="{{row.owneremail}}" id="owneremail" name="owneremail" placeholder="Enter email" required>
           </div>
           <div class="form-group">
             <label>Phone number</label><!--<input type="tel" id="phone" name="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" required>-->
             <!--<input type="number" class="form-control" placeholder="" max="999999999" id="phone" name="phone">-->
-            <input type="tel" class="form-control" id="ownerphone" name="ownerphone" placeholder="123456789" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" required>
+            <input type="tel" class="form-control" value="{{row.ownerphone}}" id="ownerphone" name="ownerphone" placeholder="123456789" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" required>
           </div>
           <div class="form-group">
             <label for="customFile">Owner Image</label>
             <div class="custom-file">
-              <input type="file" class="custom-file-input" id="ownerimg" name="ownerimg">
+              <input type="file" class="custom-file-input" value="{{row.ownerimg}}" id="ownerimg" name="ownerimg">
               <label class="custom-file-label" for="customFile">Choose file</label>
             </div>
           </div>
         </div>
         <div class="card-footer">
           <input hidden type="text" class="form-control" value="1" placeholder="">
+          <!--<button type="submit" onclick='edit({{row.id}})' class="btn btn-secondary">Submit</button>-->
           <button type="submit" class="btn btn-secondary">Submit</button>
         </div>
       </form>
+      {% endfor %}
         <!-- /.card-body -->
         <!-- /.card-footer-->
       </div>

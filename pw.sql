@@ -1,100 +1,177 @@
-CREATE DATABASE  IF NOT EXISTS `pw` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `pw`;
--- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 5.0.4
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1    Database: pw
--- ------------------------------------------------------
--- Server version	8.0.18
+-- Host: 127.0.0.1
+-- Tempo de geração: 10-Jan-2021 às 23:26
+-- Versão do servidor: 10.4.17-MariaDB
+-- versão do PHP: 7.4.13
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Table structure for table `property`
+-- Banco de dados: `pw`
 --
 
-DROP TABLE IF EXISTS `property`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `example`
+--
+
+CREATE TABLE `example` (
+  `id` int(11) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `example`
+--
+
+INSERT INTO `example` (`id`, `name`) VALUES
+(1, 'Diego'),
+(2, 'Zman');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `property`
+--
+
 CREATE TABLE `property` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `size` float DEFAULT NULL,
+  `size` varchar(45) DEFAULT NULL,
   `beds` int(11) DEFAULT NULL,
   `baths` int(11) DEFAULT NULL,
-  `garage` int(11) DEFAULT NULL,
+  `garagenumber` int(11) DEFAULT NULL,
   `description` varchar(45) DEFAULT NULL,
-  `price` float DEFAULT NULL,
+  `price` varchar(45) DEFAULT NULL,
   `location` varchar(45) DEFAULT NULL,
   `img` varchar(45) DEFAULT NULL,
-  `owner` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `owner_idx` (`owner`),
-  CONSTRAINT `owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `owner` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `property`
+-- Extraindo dados da tabela `property`
 --
 
-LOCK TABLES `property` WRITE;
-/*!40000 ALTER TABLE `property` DISABLE KEYS */;
-/*!40000 ALTER TABLE `property` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `property` (`id`, `name`, `size`, `beds`, `baths`, `garagenumber`, `description`, `price`, `location`, `img`, `owner`) VALUES
+(1, 'casa com varanda', '500', 3, 2, 1, 'very comfy house', '500.000', 'Lagoa', NULL, 1),
+(2, 'penthouse', '420', 1, 1, 0, 'bruh', '250.000', 'Silves', NULL, 2),
+(3, 'diego', '333', 2, 2, 66, 'ssssssssssss', '2222', 'PTM', 'static/upload/1.jpg', 1);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Estrutura da tabela `sessions`
 --
 
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sessions` (
+  `id` int(11) NOT NULL,
+  `session_id` varchar(255) DEFAULT NULL,
+  `data` blob DEFAULT NULL,
+  `expiry` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `session_id`, `data`, `expiry`) VALUES
+(7, 'session:fab1249a-0c6f-4007-a314-26e10e0a96ea', 0x8004952b000000000000007d94288c0a5f7065726d616e656e7494888c08757365726e616d65948c0a446965676f2053496c6194752e, '2021-02-10 21:23:40');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `user`
+--
+
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `phone` int(11) DEFAULT NULL,
   `img` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `password` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `user`
+-- Extraindo dados da tabela `user`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `user` (`id`, `name`, `email`, `phone`, `img`, `password`) VALUES
+(1, 'Diego SIla', 'diegosila@gmail.com', 966969696, 'diegosila.png', 'diego'),
+(2, 'ZMANE', 'zman@gmail.com', 963563254, NULL, 'zman'),
+(3, 'fabio', 'fasf@gmail.com', 963582415, 'static/upload/1.jpg', NULL),
+(6, 'lanso', 'lanso@gmail.com', 965326584, 'static/upload/4.jpg', 'lanso');
 
 --
--- Dumping events for database 'pw'
+-- Índices para tabelas despejadas
 --
 
 --
--- Dumping routines for database 'pw'
+-- Índices para tabela `property`
 --
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+ALTER TABLE `property`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id_UNIQUE` (`id`),
+  ADD KEY `owner_idx` (`owner`);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Índices para tabela `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `session_id` (`session_id`);
+
+--
+-- Índices para tabela `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT de tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `property`
+--
+ALTER TABLE `property`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `sessions`
+--
+ALTER TABLE `sessions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de tabela `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- Restrições para despejos de tabelas
+--
+
+--
+-- Limitadores para a tabela `property`
+--
+ALTER TABLE `property`
+  ADD CONSTRAINT `owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`);
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2020-12-21 16:37:28

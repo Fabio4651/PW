@@ -25,6 +25,60 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/daterangepicker/daterangepicker.css') }}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/summernote/summernote-bs4.min.css') }}">
+
+  <script>
+    function apagar(id) {
+      var r = confirm("Tem a certeza que pretende apagar?");
+      if (r == true) {
+        send(id)
+      } 
+    }
+
+    function send(id_prop) {
+            redirectPost('/delete_prop?id_prop='+id_prop, { id: id_prop })
+            .then(function(response) {
+                console.log(response);
+            })
+        }
+
+    function redirectPost(url, id_prop) {
+        var form = document.createElement('form');
+        document.body.appendChild(form);
+        form.method = 'POST';
+        form.action = url;
+        var input = document.createElement('input');
+        input.value = id_prop
+        form.appendChild(input);
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+
+
+
+    function edit(id_prop) {
+            redirectPost('/update_prop?id_prop='+id_prop, { id: id_prop })
+            .then(function(response) {
+                console.log(response);
+            })
+        }
+
+    function redirectPost(url, id_prop) {
+        var form = document.createElement('form');
+        document.body.appendChild(form);
+        form.method = 'POST';
+        form.action = url;
+        var input = document.createElement('input');
+        input.value = id_prop
+        form.appendChild(input);
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+
+    </script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -60,14 +114,16 @@
               <th>ID</th>
               <th>Name</th>
               <th>Size</th>
+              <th>Bathrooms</th>
               <th>Beds</th>
               <th>Garage</th>
               <th>Description</th>
               <th>Price</th>
               <th>Location</th>
-              <th>Image</th>
               <th>Owner</th>
-              <th>Owner ID</th>
+              <th>Owner Image</th>
+              <th>Owner Email</th>  
+              <th>Owner Phone</th>
             </tr>
             </thead>
             <tbody>
@@ -75,15 +131,19 @@
                   <tr>
                     <td>{{row.id}}</td>
                     <td>{{row.name}}</td>
-                    <td>{{row.size}}</td>
+                    <td>{{row.size}} m&#178</td>
+                    <td>{{row.baths}}</td>
                     <td>{{row.beds}}</td>
                     <td>{{row.garagenumber}}</td>
                     <td>{{row.description}}</td>
-                    <td>{{row.price}}</td>
+                    <td>{{row.price}} €</td>
                     <td>{{row.location}}</td>
-                    <td>{{row.img}}</td>
-                    <td>{{data2.name}}</td>
-                    <td>{{row.owner}}</td>
+                    <td>{{row.ownername}}</td>
+                    <td><img src="{{row.ownerimg}}" style="max-width:50px;" alt="Perfil"></td>
+                    <td>{{row.owneremail}}</td>
+                    <td>{{row.ownerphone}}</td>
+                    <td><button type="button" onclick='edit({{row.id}})' class="btn btn-warning img-circle"><i class="fas fa-pen"></i></button</td>
+                    <td><button type="button" onclick='apagar({{row.id}})' class="btn btn-danger img-circle"><i class="fas fa-trash"></i></button></td>
                   </tr>
               {% endfor %}
             </tfoot>
