@@ -271,51 +271,48 @@ def logout():
 
 @app.route("/prop", methods=['POST'])
 def prop():
-    if 'username' in session:
-        data = request.args.get('id_prop')
-        #print(str(id)) 
-        p = Property.query.filter_by(id=data).first()
-        u = User.query.first()
-        return render_template('home.html',
-            idprop = p.id,
-            nameprop = p.name,
-            sizeprop = p.size,
-            bedsprop = p.beds,
-            bathsprop = p.baths,
-            garageprop = p.garagenumber,
-            descriptionprop = p.description,
-            priceprop = p.price,
-            locationprop = p.location,
-            imgprop = p.img,
-            ownerprop = u.id,
-            ownerimg = u.img,
-            owneremail = u.email,
-            ownerphone = u.phone
-        )
-    return redirect(url_for('admin_main'))    
+    
+    data = request.args.get('id_prop')
+    #print(str(id)) 
+    p = Property.query.filter_by(id=data).first()
+    return render_template('home.html',
+        idprop = p.id,
+        nameprop = p.name,
+        sizeprop = p.size,
+        bedsprop = p.beds,
+        bathsprop = p.baths,
+        garageprop = p.garagenumber,
+        descriptionprop = p.description,
+        priceprop = p.price,
+        locationprop = p.location,
+        imgprop = p.img,
+        ownername = p.ownername,
+        ownerimg = p.ownerimg,
+        owneremail = p.owneremail,
+        ownerphone = p.ownerphone
+    )
+      
 
 @app.route("/search", methods=['GET'])
 def search():
-    if 'username' in session:
-        p = Property.query.filter_by(id=1).first()
-        u = User.query.filter_by(id=1).first()
-        return render_template('search.html',
-            idprop = p.id,
-            nameprop = p.name,
-            sizeprop = p.size,
-            bedsprop = p.beds,
-            bathsprop = p.baths,
-            garageprop = p.garagenumber,
-            descriptionprop = p.description,
-            priceprop = p.price,
-            locationprop = p.location,
-            imgprop = p.img,
-            ownerprop = u.id,
-            ownerimg = u.img,
-            owneremail = u.email,
-            ownerphone = u.phone
-        )
-    return redirect(url_for('admin_main'))  
+    p = Property.query.filter_by(id=1).first()
+    u = User.query.filter_by(id=1).first()
+    return render_template('search.html',
+        idprop = p.id,
+        nameprop = p.name,
+        sizeprop = p.size,
+        bedsprop = p.beds,
+        bathsprop = p.baths,
+        garageprop = p.garagenumber,
+        descriptionprop = p.description,
+        priceprop = p.price,
+        locationprop = p.location,
+        imgprop = p.img,
+        ownerprop = u.id,
+        ownerimg = u.img,
+        owneremail = u.email,
+        ownerphone = u.phone
+    )
 
 @app.route("/", methods=['GET'])
 def main():
