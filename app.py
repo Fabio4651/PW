@@ -86,16 +86,13 @@ class Property(db.Model):
         return repr(id)
     
     
-@app.route('/query', methods=['POST'])
-def query():
-    data = request.args.get('id_prop') #if key doesn't exist, returns None
-    print('Diego '+str(data)) 
-    return '''<h1>The language value is: {}</h1>'''.format(data)
 
 @app.route("/admin_main")
 def admin_main():
     if 'username' in session:
-        return render_template('admin.html')
+        total_users = User.query.count()
+        total_props = Property.query.count()
+        return render_template('admin.html', total_users=total_users, total_props=total_props)
     return render_template('login.html')
 
 @app.route("/list_user")
@@ -123,9 +120,10 @@ def insert_user():
         phone = request.form['phone']
         img = request.files['img']
         password = request.form['password']
-        if request.method == 'POST' and 'img' in request.files:
-            filename = files.save(request.files['img'], name=str(last_id) + '.jpg')
-        new_user = User(name=name, email=email, phone=phone, img='static/upload/' + str(last_id) + '.jpg', password=password)
+        filename = 'static/img/user.png'
+        if request.method == 'POST' and img:
+            filename = 'static/upload/' + files.save(request.files['img']) 
+        new_user = User(name=name, email=email, phone=phone, img=filename, password=password)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('list_user'))
@@ -135,6 +133,58 @@ def insert_user():
 def add_prop():
     if 'username' in session:
         return render_template('add_prop.html')
+    return redirect(url_for('admin_main'))  
+
+@app.route('/delete_user', methods=['POST'])
+def delete_user():
+    if 'username' in session:
+        data=request.args.get('id_user')
+        #print('teste'+data_file)
+        User.query.filter_by(id=data).delete()
+        #my_file = Path(os.path.join(app.config['UPLOADED_FILES_DEST'], data_file))
+        #if my_file.exists():
+            #os.remove(os.path.join(app.config['UPLOADED_FILES_DEST'], data_file))
+        db.session.commit()
+        return redirect(url_for('list_user'))
+    return redirect(url_for('admin_main'))  
+
+@app.route("/update_user", methods=['POST'])
+def update_user():
+    if 'username' in session:
+        data=request.args.get('id_user')
+        update = User.query.filter_by(id=data)
+
+        return render_template('edit_user.html', update=update)
+    return redirect(url_for('admin_main'))   
+
+@app.route('/edit_user', methods=['POST'])
+def edit_user():
+    if 'username' in session:
+        
+        data = request.form['id']
+        #print('teste'+str(data))
+        update = User.query.filter_by(id=data).first()
+        bd_img = update.img
+        img = request.files['img']
+
+        if request.method == 'POST' and 'name' in request.form:
+            update.name = request.form['name'] 
+
+        if request.method == 'POST' and 'email' in request.form:    
+            update.email = request.form['email']
+
+        if request.method == 'POST' and 'phone' in request.form:
+            update.phone = request.form['phone']
+
+        update.img = bd_img
+        if request.method == 'POST' and img:
+            update.img = 'static/upload/' + files.save(request.files['img']) 
+
+        if request.method == 'POST' and 'password' in request.form:
+            update.password = request.form['password'] 
+
+        db.session.commit()
+        return redirect(url_for('list_user'))
     return redirect(url_for('admin_main'))    
 
 @app.route('/insert_prop', methods=['POST'])
@@ -177,7 +227,7 @@ def delete_prop():
             #os.remove(os.path.join(app.config['UPLOADED_FILES_DEST'], data_file))
         db.session.commit()
         return redirect(url_for('list_prop'))
-    return redirect(url_for('admin_main'))  
+    return redirect(url_for('admin_main'))   
 
 @app.route("/update_prop", methods=['POST'])
 def update_prop():
