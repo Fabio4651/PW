@@ -207,11 +207,15 @@ def insert_prop():
     owneremail = request.form['owneremail']
     ownerphone = request.form['ownerphone']
     ownerimg = request.files['ownerimg']
-    if request.method == 'POST' and 'img' in request.form:
-       filename = files.save(request.files['img'], name=str(last_id) + '.jpg')
-    if request.method == 'POST' and 'ownerimg' in request.form:
-       filename = files.save(request.files['ownerimg'], name=ownername + '_' + str(last_id) + '.jpg')   
-    new_prop = Property(name=name, size=size, beds=beds, img='static/upload/' + str(last_id) + '.jpg', garagenumber=garagenumber, baths=baths, description=description, price=price, ownername=ownername, owneremail=owneremail, ownerphone=ownerphone, ownerimg='static/upload/' + ownername + '_' + str(last_id) + '.jpg', location=location)
+
+    filename = 'static/img/h2.jpg'
+    filename2 = 'static/img/user.png'
+
+    if request.method == 'POST' and img:
+        filename = 'static/upload/' + files.save(request.files['img'])    
+    if request.method == 'POST' and ownerimg:
+        filename2 = 'static/upload/' + files.save(request.files['ownerimg'])   
+    new_prop = Property(name=name, size=size, beds=beds, img=filename, garagenumber=garagenumber, baths=baths, description=description, price=price, ownername=ownername, owneremail=owneremail, ownerphone=ownerphone, ownerimg=filename2, location=location)
     db.session.add(new_prop)
     db.session.commit()
     return redirect(url_for('list_prop'))  
@@ -245,6 +249,10 @@ def edit_prop():
         data = request.form['id']
         #print('teste'+str(data))
         update = Property.query.filter_by(id=data).first()
+        bd_img = update.img
+        bd_img2 = update.ownerimg
+        img = request.files['img']
+        ownerimg = request.files['ownerimg']
 
         if request.method == 'POST' and 'name' in request.form:
             update.name = request.form['name'] 
@@ -270,8 +278,9 @@ def edit_prop():
         if request.method == 'POST' and 'location' in request.form:
             update.location = request.form['location']
 
-        if request.method == 'POST' and 'img' in request.form:
-            update.img = request.files['img']
+        update.img = bd_img
+        if request.method == 'POST' and img:
+            update.img = 'static/upload/' + files.save(request.files['img'])    
 
         if request.method == 'POST' and 'ownername' in request.form:
             update.ownername = request.form['ownername']
@@ -282,8 +291,9 @@ def edit_prop():
         if request.method == 'POST' and 'ownerphone' in request.form:
             update.ownerphone = request.form['ownerphone']
 
-        if request.method == 'POST' and 'ownerimg' in request.form:
-            update.ownerimg = request.files['ownerimg']
+        update.ownerimg = bd_img2
+        if request.method == 'POST' and ownerimg:
+            update.ownerimg = 'static/upload/' + files.save(request.files['ownerimg'])    
 
         db.session.commit()
         return redirect(url_for('list_prop'))
