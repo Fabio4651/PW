@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '_1#y6G"F7Q2z\n\succ/'
 app.config['APPLICATION_ROOT'] = "/"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/pw'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/pw'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_TYPE'] = 'sqlalchemy'
 
@@ -85,7 +85,10 @@ class Property(db.Model):
     def __repr__(self):
         return repr(id)
     
-    
+
+@app.route("/mapteste")
+def mapteste():
+    return render_template('mapteste.html')
 
 @app.route("/admin_main")
 def admin_main():
@@ -133,6 +136,12 @@ def insert_user():
 def add_prop():
     if 'username' in session:
         return render_template('add_prop.html')
+    return redirect(url_for('admin_main'))  
+
+@app.route("/add_prop2")
+def add_prop2():
+    if 'username' in session:
+        return render_template('add_prop2.html')
     return redirect(url_for('admin_main'))  
 
 @app.route('/delete_user', methods=['POST'])

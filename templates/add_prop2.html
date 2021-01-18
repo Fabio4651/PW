@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HOMIE</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/fontawesome-free/css/all.min.css') }}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/jqvmap/jqvmap.min.css') }}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/dist/css/adminlte.min.css') }}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/daterangepicker/daterangepicker.css') }}">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='AdminLTE/plugins/summernote/summernote-bs4.min.css') }}">
+  <!-- Page specific script -->
+  <script>
+  $(function () {
+    bsCustomFileInput.init();
+  });
+  </script>
+  <script type="text/javascript">
+    function ShowHideDiv() {
+        document.getElementById("garagenumber").value = "0";
+        var customRadio1 = document.getElementById("customRadio1");
+        var ngarage = document.getElementById("ngarage");
+        ngarage.style.display = customRadio1.checked ? "block" : "none";
+    }
+  </script>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  {% include 'navbar.html' %}
+  <!-- /.navbar -->
+
+  {% include 'sidebar.html' %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Add Property</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card">
+        <form method="POST" action="/insert_prop" enctype="multipart/form-data">
+        <div class="card-body">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" placeholder="" id="name" name="name">
+          </div>
+          <div class="form-group">
+            <label>Size (m&#178)</label>
+            <input type="number" class="form-control" placeholder="" id="size" name="size">
+          </div>
+          <div class="form-group">
+            <label>Number of beds</label>
+            <input type="number" class="form-control" placeholder="" id="beds" name="beds">
+          </div>
+          <div class="form-group">
+            <label>Number of bathrooms</label>
+            <input type="number" class="form-control" placeholder="" id="baths" name="baths">
+          </div>
+          <div class="form-group">
+            <label>Garage</label>
+            <div class="custom-control custom-radio">
+              <input class="custom-control-input custom-control-input-secondary" onclick="ShowHideDiv()" type="radio" id="customRadio1" name="garage">
+              <label for="customRadio1" class="custom-control-label">Yes</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input class="custom-control-input custom-control-input-secondary" onclick="ShowHideDiv()" type="radio" id="customRadio2" name="garage" checked>
+              <label for="customRadio2" class="custom-control-label">No</label>
+            </div>
+          </div>
+          <div id="ngarage" style="display: none" class="form-group">
+            <label>Number of garages</label>
+            <input type="number" class="form-control" id="garagenumber" value="0" name="garagenumber">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="3" id="description" name="description"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Price (€)</label>
+            <input type="number" class="form-control" placeholder="" id="price" name="price">
+          </div>
+          <div class="form-group">
+            <label>Map</label>
+            <input type="hidden" class="form-control" placeholder="" id="lat" name="lat">
+            <input type="hidden" class="form-control" placeholder="" id="long" name="long">
+            <div class="form-control" style="height: 50vh;" id="mapid"></div>
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" class="form-control" placeholder="" id="location" name="location">
+          </div>
+          <div class="form-group">
+            <label for="customFile">Images</label>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="customFile" name="img">
+              <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Owner Name</label>
+            <input type="text" class="form-control" placeholder="" id="ownername" name="ownername">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Owner Email</label>
+            <input type="email" class="form-control" id="owneremail" name="owneremail" placeholder="Enter email" required>
+          </div>
+          <div class="form-group">
+            <label>Phone number</label><!--<input type="tel" id="phone" name="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}" required>-->
+            <!--<input type="number" class="form-control" placeholder="" max="999999999" id="phone" name="phone">-->
+            <input type="tel" class="form-control" id="ownerphone" name="ownerphone" placeholder="123456789" pattern="[0-9]{3}[0-9]{3}[0-9]{3}" required>
+          </div>
+          <div class="form-group">
+            <label for="customFile">Owner Image</label>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="ownerimg" name="ownerimg">
+              <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <input hidden type="text" class="form-control" value="1" placeholder="">
+          <button type="submit" class="btn btn-secondary">Submit</button>
+        </div>
+      </form>
+        <!-- /.card-body -->
+        <!-- /.card-footer-->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 3.1.0-rc
+    </div>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<script>
+  var marker = null;
+
+  var mymap = L.map('mapid').setView([10, 0], 3);
+
+  L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=d5bWmwf9SPecTZNu2TzX', {
+  attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+  }).addTo(mymap);
+
+  mymap.on('click', function(e){
+      if(marker == null){
+          var coord = e.latlng;
+          var lat = coord.lat;
+          var lng = coord.lng;
+          console.log("latitude: " + lat + " and longitude: " + lng);
+          marker = new L.Marker([lat, lng]).on('click', markerOnClick).addTo(mymap);
+      }
+  });
+
+  function markerOnClick(e){
+      if(marker != null){
+          mymap.removeLayer(marker);
+          marker = null;
+      }
+  }
+</script>
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/jquery/jquery.min.js') }}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- ChartJS -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/chart.js/Chart.min.js') }}"></script>
+<!-- Sparkline -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/sparklines/sparkline.js') }}"></script>
+<!-- JQVMap -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+<!-- jQuery Knob Chart -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
+<!-- daterangepicker -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/moment/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='AdminLTE/plugins/daterangepicker/daterangepicker.js') }}"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<!-- Summernote -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/summernote/summernote-bs4.min.js') }}"></script>
+<!-- overlayScrollbars -->
+<script src="{{ url_for('static', filename='AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ url_for('static', filename='AdminLTE/dist/js/adminlte.js') }}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ url_for('static', filename='AdminLTE/dist/js/pages/dashboard.js') }}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="{{ url_for('static', filename='AdminLTE/dist/js/pages/dashboard.js') }}"></script>
+<!-- bs-custom-file-input -->
+<script src="{ url_for('static', filename='AdminLTE/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ url_for('static', filename='AdminLTE/dist/js/adminlte.min.js') }}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ url_for('static', filename='AdminLTE/dist/js/demo.js') }}"></script>
+</body>{
+</html>
