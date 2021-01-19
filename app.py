@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '_1#y6G"F7Q2z\n\succ/'
 app.config['APPLICATION_ROOT'] = "/"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/pw'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/pw'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_TYPE'] = 'sqlalchemy'
 
@@ -66,8 +66,10 @@ class Property(db.Model):
     owneremail = db.Column(db.String(100))
     ownerphone = db.Column(db.String(100), nullable=False)
     ownerimg = db.Column(db.String(100))
+    lat = db.Column(db.Float)
+    lon = db.Column(db.Float)
 
-    def __init__(self,name,size,beds,baths,garagenumber,description,price,location,img,ownername, owneremail, ownerphone, ownerimg):
+    def __init__(self,name,size,beds,baths,garagenumber,description,price,location,img,ownername, owneremail, ownerphone, ownerimg, lat, lon):
         self.name=name
         self.size=size
         self.beds=beds
@@ -81,6 +83,8 @@ class Property(db.Model):
         self.owneremail=owneremail  
         self.ownerphone=ownerphone     
         self.ownerimg=ownerimg 
+        self.lat=lat 
+        self.lon=lon 
     
     def __repr__(self):
         return repr(id)
@@ -216,6 +220,8 @@ def insert_prop():
     owneremail = request.form['owneremail']
     ownerphone = request.form['ownerphone']
     ownerimg = request.files['ownerimg']
+    lat = request.form['lat']
+    lon = request.form['lon']
 
     filename = 'static/img/h2.jpg'
     filename2 = 'static/img/user.png'
@@ -224,7 +230,7 @@ def insert_prop():
         filename = 'static/upload/' + files.save(request.files['img'])    
     if request.method == 'POST' and ownerimg:
         filename2 = 'static/upload/' + files.save(request.files['ownerimg'])   
-    new_prop = Property(name=name, size=size, beds=beds, img=filename, garagenumber=garagenumber, baths=baths, description=description, price=price, ownername=ownername, owneremail=owneremail, ownerphone=ownerphone, ownerimg=filename2, location=location)
+    new_prop = Property(name=name, size=size, beds=beds, img=filename, garagenumber=garagenumber, baths=baths, description=description, price=price, ownername=ownername, owneremail=owneremail, ownerphone=ownerphone, ownerimg=filename2, location=location, lat=lat, lon=lon)
     db.session.add(new_prop)
     db.session.commit()
     return redirect(url_for('list_prop'))  
@@ -247,8 +253,11 @@ def update_prop():
     if 'username' in session:
         data=request.args.get('id_prop')
         update = Property.query.filter_by(id=data)
+        update2 = Property.query.filter_by(id=data).first()
+        latitude = update2.lat
+        longitude = update2.lon
 
-        return render_template('edit_prop.html', update=update)
+        return render_template('edit_prop.html', update=update, latitude=latitude, longitude=longitude)
     return redirect(url_for('admin_main')) 
 
 @app.route('/edit_prop', methods=['POST'])
@@ -259,6 +268,10 @@ def edit_prop():
         #print('teste'+str(data))
         update = Property.query.filter_by(id=data).first()
         bd_img = update.img
+        lat_bd = update.lat
+        lat = request.form['lat']
+        lon_bd = update.lon
+        lon = request.form['lon']
         bd_img2 = update.ownerimg
         img = request.files['img']
         ownerimg = request.files['ownerimg']
@@ -299,6 +312,14 @@ def edit_prop():
 
         if request.method == 'POST' and 'ownerphone' in request.form:
             update.ownerphone = request.form['ownerphone']
+
+        update.lat = lat_bd
+        if request.method == 'POST' and lat:
+            update.lat = request.form['lat']    
+
+        update.lon = lon_bd
+        if request.method == 'POST' and lon:
+            update.lon = request.form['lon']       
 
         update.ownerimg = bd_img2
         if request.method == 'POST' and ownerimg:
@@ -385,24 +406,8 @@ def search():
 
 @app.route("/", methods=['GET'])
 def main():
-    p = Property.query.filter_by(id=1).first()
-    u = User.query.filter_by(id=1).first()
-    return render_template('index.html',
-        idprop = p.id,
-        nameprop = p.name,
-        sizeprop = p.size,
-        bedsprop = p.beds,
-        bathsprop = p.baths,
-        garageprop = p.garagenumber,
-        descriptionprop = p.description,
-        priceprop = p.price,
-        locationprop = p.location,
-        imgprop = p.img,
-        ownerprop = u.id,
-        ownerimg = u.img,
-        owneremail = u.email,
-        ownerphone = u.phone
-    )
+    data = Property.query.all()
+    return render_template('index.html', data=data)
 
 def __init__(self, name, size):
     self.name = name

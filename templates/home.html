@@ -45,6 +45,7 @@ function myFunction() {
 }
 </script>
 
+
 </head>
 <body>
 <!-- Page Preloder -->
@@ -117,14 +118,14 @@ Hero Section End -->
                 <img src="img/rooms/5.jpg" alt="IMG">
             </div>-->
 
-            <div class="item">         
+            <div  class="item">         
                 <div class="clearfix" style="position: absolute;left: 32.5%;top: 64%;max-width:680px;">
                     <div class="text-center room-title">
                         <!--<h4 style="text-align: left" id="housedesc" >Country Style House with beautiful garden and terrace</h4><br>-->
                         <h4 style="text-align: left" id="housedesc" >{{nameprop}}</h4><br>
                         <h6 style="text-align: left" id="housedesc" >{{locationprop}}<span class="h4" style="float:right;">{{priceprop}}€</span></h6><br>
                     </div>
-                    <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
+                    <!--<ul id="image-gallery" class="gallery list-unstyled cS-hidden">
                         <li data-thumb="{{ url_for('static', filename='img/rooms/5.jpg') }}"> 
                             <img src="{{ url_for('static', filename='img/rooms/5.jpg') }}" />
                         </li>
@@ -152,10 +153,11 @@ Hero Section End -->
                         <li data-thumb="{{ url_for('static', filename='img/rooms/5.jpg') }}"> 
                             <img src="{{ url_for('static', filename='img/rooms/5.jpg') }}" />
                         </li>
-                    </ul>
+                    </ul>-->
+                    <img style="height: 50vh; width: 75vh;" src="{{imgprop}}" />
                     <div style="width:40%;position: absolute;top: 95%;left: 60%;" class="room-details"> 
                         <div class="text-center room-title">
-                            <img class="img-radius" style="width: 28%;" src="{{ownerimg}}" alt="User-Profile-Image">
+                            <img class="img-radius" style="width: 8vh; height: 8vh;" src="{{ownerimg}}" alt="User-Profile-Image">
                             <h6 id="housedesc"><br>{{ownername}}</h6>
                             <h6 id="housedesc"><br>{{owneremail}}</h6>
                             <h6 id="housedesc"><br>{{ownerphone}}</h6>

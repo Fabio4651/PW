@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HOMIE</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -134,6 +137,12 @@
             <input type="number" class="form-control" value="{{row.price}}" placeholder="" id="price" name="price">
           </div>
           <div class="form-group">
+            <label>Coordinates</label>
+            <input type="hidden" class="form-control" placeholder="" id="lat" name="lat">
+            <input type="hidden" class="form-control" placeholder="" id="lon" name="lon">
+            <div class="form-control" style="height: 80vh; width: 50%;" id="mapid"></div>
+          </div>
+          <div class="form-group">
             <label>Location</label>
             <input type="text" class="form-control" value="{{row.location}}" placeholder="" id="location" name="location">
           </div>
@@ -196,6 +205,59 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<script>
+  var marker = null;
+
+
+  var mymap = L.map('mapid').setView([39.5, -8], 7);
+
+
+  L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=d5bWmwf9SPecTZNu2TzX', {
+  attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+  }).addTo(mymap);
+
+  //var marker = new L.Marker(["{{latitute}}", "{{longitude}}"]).addTo(mymap);
+
+  mymap.on('click', function(e){
+      if(marker == null){
+          var coord = e.latlng;
+          var lat = coord.lat;
+          var lng = coord.lng;
+          document.getElementById("lat").value=lat
+          document.getElementById("lon").value=lng
+          marker = new L.Marker([lat, lng]).on('click', markerOnClick).addTo(mymap);
+      }
+  });
+
+  function markerOnClick(e){
+      if(marker != null){
+          mymap.removeLayer(marker);
+          marker = null;
+      }
+  }
+
+  var MyCustomMarker = L.Marker.extend({
+    bindPopup: function(htmlContent) {       
+        // call the super method
+        L.Marker.prototype.bindPopup.apply(this, [htmlContent]); 
+        // unbind the click event
+        this.off("click", this.openPopup, this);
+        // bind to mouse over
+        this.on("mouseover", function(e) {  
+            // get the element that the mouse hovered onto
+            var target = e.originalEvent.fromElement || e.originalEvent.relatedTarget;
+            // show the popup
+            this.openPopup();  
+        }, this);      
+    }
+});
+/*var latitute = {{latitute}};
+var longitude = {{longitude}};
+
+var marker = new MyCustomMarker(["{{latitute}}", "{{longitude}}"]);
+mymap.addLayer(marker);*/
+</script>
 
 <!-- jQuery -->
 <script src="{{ url_for('static', filename='AdminLTE/plugins/jquery/jquery.min.js') }}"></script>

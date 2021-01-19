@@ -18,6 +18,33 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='slider-js-master/res/style.main.css') }}">
 
+<script>
+
+function send(id_prop) {
+    redirectPost('/prop?id_prop='+id_prop, { id: id_prop })
+    .then(function(response) {
+          console.log(response);
+    })
+}
+
+    function redirectPost(url, send_data) {
+        var form = document.createElement('form');
+        document.body.appendChild(form);
+        form.method = 'post';
+        form.action = url;
+        for (var name in send_data) {
+            var input = document.createElement('input');
+            input.value = send_data
+            form.appendChild(input);
+        }
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+
+
+</script>
+
 </head>
 <body>
 <!-- Page Preloder -->
@@ -77,13 +104,14 @@ Hero Section End -->
 <div class="container">
 <div class="row">
 <!-- \ -->
+{% for row in data %}
 <div class="col-lg-4 col-md-6">
     <div class="room-items">
-        <img id="houseimg" class="room-img set-bg" src="{{ url_for('static', filename='img/rooms/5.jpg') }}" alt="">
+        <img id="houseimg" class="room-img set-bg" src="{{row.img}}" alt="">
         <div class="room-text">
             <div class="room-details">
                 <div class="text-center room-title">
-                    <h5 id="housedesc" >Country Style House with beautiful garden and terrace</h5>
+                    <h5 id="housedesc" >{{row.name}}</h5>
                 </div>
             </div>
             <div class="room-features">
@@ -91,237 +119,34 @@ Hero Section End -->
                     <div class="size">
                         <p>Size</p>
                         <i class="fas fa-ruler-combined fa-lg"></i>
-                        <span id="housesize">2561</span><span>m&#178</span>
+                        <span id="housesize">{{row.size}}</span><span>m&#178</span>
                     </div>
                     <div class="beds">
                         <p>Beds</p>
                         <i class="fas fa-bed fa-lg"></i>
-                        <span id="housebeds">9</span>
+                        <span id="housebeds">{{row.beds}}</span>
                     </div>
                     <div class="baths">
                         <p>Baths</p>
                         <i class="fas fa-bath fa-lg"></i>
-                        <span id="housebath">2</span>
+                        <span id="housebath">{{row.baths}}</span>
                     </div>
                     <div class="garage">
                         <p>Garage</p>
                         <i class="fas fa-warehouse fa-lg"></i>
-                        <span id="housegar">1</span>
+                        <span id="housegar">{{row.garagenumber}}</span>
                     </div>
                 </div>
             </div>
 
-            <div class="room-price"><span>$345,000</span></div>
-            <a href="/prop" class="site-btn btn-line">View Property</a>
+            <div style="width: 50%;" class="room-price"><span>{{row.price}} €</span></div>
+            <button onclick="send({{row.id}})" class="site-btn btn-line">View Property</button>
 
         </div>
     </div>
 </div>
-<!-- \ -->
-<div class="col-lg-4 col-md-6">
-    <div class="room-items">
-        <img id="houseimg" class="room-img set-bg" src="{{ url_for('static', filename='img/rooms/5.jpg') }}" alt="">
-        <div class="room-text">
-            <div class="room-details">
-                <div class="text-center room-title">
-                    <h5 id="housedesc" >Country Style House with beautiful garden and terrace</h5>
-                </div>
-            </div>
-            <div class="room-features">
-                <div class="room-info">
-                    <div class="size">
-                        <p>Size</p>
-                        <i class="fas fa-ruler-combined fa-lg"></i>
-                        <span id="housesize">2561</span><span>m&#178</span>
-                    </div>
-                    <div class="beds">
-                        <p>Beds</p>
-                        <i class="fas fa-bed fa-lg"></i>
-                        <span id="housebeds">9</span>
-                    </div>
-                    <div class="baths">
-                        <p>Baths</p>
-                        <i class="fas fa-bath fa-lg"></i>
-                        <span id="housebath">2</span>
-                    </div>
-                    <div class="garage">
-                        <p>Garage</p>
-                        <i class="fas fa-warehouse fa-lg"></i>
-                        <span id="housegar">1</span>
-                    </div>
-                </div>
-            </div>
+{% endfor %}
 
-            <div class="room-price"><span>$345,000</span></div>
-            <a href="/prop" class="site-btn btn-line">View Property</a>
-
-        </div>
-    </div>
-</div>
-<!-- \ -->
-<div class="col-lg-4 col-md-6">
-    <div class="room-items">
-        <img id="houseimg" class="room-img set-bg" src="{{ url_for('static', filename='img/rooms/5.jpg') }}" alt="">
-        <div class="room-text">
-            <div class="room-details">
-                <div class="text-center room-title">
-                    <h5 id="housedesc" >Country Style House with beautiful garden and terrace</h5>
-                </div>
-            </div>
-            <div class="room-features">
-                <div class="room-info">
-                    <div class="size">
-                        <p>Size</p>
-                        <i class="fas fa-ruler-combined fa-lg"></i>
-                        <span id="housesize">2561</span><span>m&#178</span>
-                    </div>
-                    <div class="beds">
-                        <p>Beds</p>
-                        <i class="fas fa-bed fa-lg"></i>
-                        <span id="housebeds">9</span>
-                    </div>
-                    <div class="baths">
-                        <p>Baths</p>
-                        <i class="fas fa-bath fa-lg"></i>
-                        <span id="housebath">2</span>
-                    </div>
-                    <div class="garage">
-                        <p>Garage</p>
-                        <i class="fas fa-warehouse fa-lg"></i>
-                        <span id="housegar">1</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="room-price"><span>$345,000</span></div>
-            <a href="/prop" class="site-btn btn-line">View Property</a>
-
-        </div>
-    </div>
-</div>
-<!-- \ -->
-<div class="col-lg-4 col-md-6">
-    <div class="room-items">
-        <img id="houseimg" class="room-img set-bg" src="{{ url_for('static', filename='img/rooms/5.jpg') }}" alt="">
-        <div class="room-text">
-            <div class="room-details">
-                <div class="text-center room-title">
-                    <h5 id="housedesc" >Country Style House with beautiful garden and terrace</h5>
-                </div>
-            </div>
-            <div class="room-features">
-                <div class="room-info">
-                    <div class="size">
-                        <p>Size</p>
-                        <i class="fas fa-ruler-combined fa-lg"></i>
-                        <span id="housesize">2561</span><span>m&#178</span>
-                    </div>
-                    <div class="beds">
-                        <p>Beds</p>
-                        <i class="fas fa-bed fa-lg"></i>
-                        <span id="housebeds">9</span>
-                    </div>
-                    <div class="baths">
-                        <p>Baths</p>
-                        <i class="fas fa-bath fa-lg"></i>
-                        <span id="housebath">2</span>
-                    </div>
-                    <div class="garage">
-                        <p>Garage</p>
-                        <i class="fas fa-warehouse fa-lg"></i>
-                        <span id="housegar">1</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="room-price"><span>$345,000</span></div>
-            <a href="/prop" class="site-btn btn-line">View Property</a>
-
-        </div>
-    </div>
-</div>
-<!-- \ -->
-<div class="col-lg-4 col-md-6">
-    <div class="room-items">
-        <img id="houseimg" class="room-img set-bg" src="{{ url_for('static', filename='img/rooms/5.jpg') }}" alt="">
-        <div class="room-text">
-            <div class="room-details">
-                <div class="text-center room-title">
-                    <h5 id="housedesc" >Country Style House with beautiful garden and terrace</h5>
-                </div>
-            </div>
-            <div class="room-features">
-                <div class="room-info">
-                    <div class="size">
-                        <p>Size</p>
-                        <i class="fas fa-ruler-combined fa-lg"></i>
-                        <span id="housesize">2561</span><span>m&#178</span>
-                    </div>
-                    <div class="beds">
-                        <p>Beds</p>
-                        <i class="fas fa-bed fa-lg"></i>
-                        <span id="housebeds">9</span>
-                    </div>
-                    <div class="baths">
-                        <p>Baths</p>
-                        <i class="fas fa-bath fa-lg"></i>
-                        <span id="housebath">2</span>
-                    </div>
-                    <div class="garage">
-                        <p>Garage</p>
-                        <i class="fas fa-warehouse fa-lg"></i>
-                        <span id="housegar">1</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="room-price"><span>$345,000</span></div>
-            <a href="/prop" class="site-btn btn-line">View Property</a>
-
-        </div>
-    </div>
-</div>
-<!-- \ -->
-<div class="col-lg-4 col-md-6">
-    <div class="room-items">
-        <img id="houseimg" class="room-img set-bg" src="{{ url_for('static', filename='img/rooms/5.jpg') }}" alt="">
-        <div class="room-text">
-            <div class="room-details">
-                <div class="text-center room-title">
-                    <h5 id="housedesc" >Country Style House with beautiful garden and terrace</h5>
-                </div>
-            </div>
-            <div class="room-features">
-                <div class="room-info">
-                    <div class="size">
-                        <p>Size</p>
-                        <i class="fas fa-ruler-combined fa-lg"></i>
-                        <span id="housesize">2561</span><span>m&#178</span>
-                    </div>
-                    <div class="beds">
-                        <p>Beds</p>
-                        <i class="fas fa-bed fa-lg"></i>
-                        <span id="housebeds">9</span>
-                    </div>
-                    <div class="baths">
-                        <p>Baths</p>
-                        <i class="fas fa-bath fa-lg"></i>
-                        <span id="housebath">2</span>
-                    </div>
-                    <div class="garage">
-                        <p>Garage</p>
-                        <i class="fas fa-warehouse fa-lg"></i>
-                        <span id="housegar">1</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="room-price"><span>$345,000</span></div>
-            <a href="/prop" class="site-btn btn-line">View Property</a>
-
-        </div>
-    </div>
-</div>
 <!-- \ -->
 </div>
 </div>
