@@ -20,6 +20,14 @@
 <!-- leaflet -->
 <style>
     #mapid {position: absolute; top: 0; bottom: 0; left: 0; right: 0;}
+    .mrkimg {
+        user-drag: none; 
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
 </style>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
@@ -27,6 +35,21 @@
 
 
     <script>
+
+var markersList;
+    
+    fetch('/data', {
+    method: 'GET',
+    })
+    .then(function(response) {
+      response.json().then(function(message) {
+        markersList = message;
+        console.log(markersList);
+      });
+    })
+    .catch(function(error) {
+      console.log("Fetch error: " + error);
+    });
 
         var id_prop;
 
@@ -228,12 +251,7 @@
 //]]></script>
 
 <script>
-    var markersList = [
-        {"imgsrc":"{{ url_for('static', filename='img/rooms/2.jpg') }}", "id":1, "lang":51.5, "long":-0.09, "size":"1200", "beds":5, "bath":1, "garage":2, "price":"$250,000", "desc":"Country Style House with beautiful garden and terrace"},
-        {"imgsrc":"{{ url_for('static', filename='img/rooms/3.jpg') }}", "id":2, "lang":51.5, "long":-0.011, "size":"1800", "beds":7, "bath":3, "garage":0, "price":"$650,000", "desc":"european Style House with swimming pool"},
-    ];
-
-    var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+    var mymap = L.map('mapid').setView([51.505, -0.09], 4);
 
     L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=d5bWmwf9SPecTZNu2TzX', {
     attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
@@ -259,20 +277,20 @@ var MyCustomMarker = L.Marker.extend({
 var markers = new L.FeatureGroup();
 
 markersList.forEach(function(mrk) {
+    console.log("hi");
     var popup="<div id='div1' ondrop='drop(event)' ondragover='allowDrop(event)' style='border: 1px solid #aaaaaa;'>"+
-            "<div class='room-img'><img id='mrkimg' src='"+mrk.imgsrc+"'></img></div>"+
-                "<div id='mrkdata' class='text-center' data-id='"+mrk.id+"' data-size='"+mrk.size+"' data-beds='"+mrk.beds+"' data-bath='"+mrk.bath+"' data-garage='"+mrk.garage+"' data-price='"+mrk.price+"'>"+
-                    "<h5 id='mrkdesc'>"+mrk.desc+"</h5>"+
+            "<div class='room-img'><img class='mrkimg' id='mrkimg' src='"+mrk.img+"'></img></div>"+
+                "<div id='mrkdata' class='text-center' data-id='"+mrk.id+"' data-size='"+mrk.size+"' data-beds='"+mrk.beds+"' data-bath='"+mrk.baths+"' data-garage='"+mrk.garagenumber+"' data-price='"+mrk.price+"'>"+
+                    "<h5 id='mrkdesc'>"+mrk.description+"</h5>"+
                 "</div>"+
             "</div>"
     ;
-
-    var marker = new MyCustomMarker([mrk.lang, mrk.long]);
+    console.log(mrk.baths);
+    var marker = new MyCustomMarker([mrk.lat, mrk.lon]);
     marker.bindPopup(popup);
     markers.addLayer(marker);
 });
 mymap.addLayer(markers);
-
 
 function allowDrop(ev) {
     ev.preventDefault();
