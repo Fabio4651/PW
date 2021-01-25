@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '_1#y6G"F7Q2z\n\succ/'
 app.config['APPLICATION_ROOT'] = "/"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/pw'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/pw'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_TYPE'] = 'sqlalchemy'
 
@@ -91,6 +91,7 @@ class Property(db.Model):
     
 def serialize(self):
     return {
+        'id': self.id,
         'name': self.name,
         'size': self.size,
         'beds': self.beds,
