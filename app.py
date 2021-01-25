@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '_1#y6G"F7Q2z\n\succ/'
 app.config['APPLICATION_ROOT'] = "/"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:admin@localhost/pw'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/pw'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_TYPE'] = 'sqlalchemy'
 
@@ -89,6 +89,24 @@ class Property(db.Model):
     def __repr__(self):
         return repr(id)
     
+def serialize(self):
+    return {
+        'name': self.name,
+        'size': self.size,
+        'beds': self.beds,
+        'baths': self.baths,
+        'garagenumber': self.garagenumber,
+        'description': self.description,
+        'price': self.price,
+        'location': self.location,
+        'img': self.img,
+        'ownername': self.ownername,
+        'owneremail': self.owneremail,
+        'ownerphone': self.ownerphone,
+        'ownerimg': self.ownerimg,
+        'lat': self.lat,
+        'lon': self.lon
+    }
 
 @app.route("/mapteste")
 def mapteste():
@@ -385,24 +403,12 @@ def prop():
 
 @app.route("/search", methods=['GET'])
 def search():
-    p = Property.query.filter_by(id=1).first()
-    u = User.query.filter_by(id=1).first()
-    return render_template('search.html',
-        idprop = p.id,
-        nameprop = p.name,
-        sizeprop = p.size,
-        bedsprop = p.beds,
-        bathsprop = p.baths,
-        garageprop = p.garagenumber,
-        descriptionprop = p.description,
-        priceprop = p.price,
-        locationprop = p.location,
-        imgprop = p.img,
-        ownerprop = u.id,
-        ownerimg = u.img,
-        owneremail = u.email,
-        ownerphone = u.phone
-    )
+    return render_template('search.html')
+
+@app.route("/data", methods=['GET'])
+def data():
+    data = Property.query.all()
+    return jsonify([serialize(i) for i in data])
 
 @app.route("/", methods=['GET'])
 def main():

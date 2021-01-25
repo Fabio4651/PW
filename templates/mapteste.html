@@ -227,6 +227,12 @@
 <script>
     var marker = null;
 
+
+    var markersList = [];
+
+    markersList.push({"imgsrc":"{{ url_for('static', filename='img/rooms/3.jpg') }}", "id":3, "lang":55.5, "long":-1.011, "size":"1100", "beds":2, "bath":7, "garage":1, "price":"$650,000", "desc":"european Style House with swimming pool"});
+    console.log(markersList)
+
     var mymap = L.map('mapid').setView([10, 0], 3);
 
     L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=d5bWmwf9SPecTZNu2TzX', {
